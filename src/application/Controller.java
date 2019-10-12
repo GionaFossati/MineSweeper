@@ -4,6 +4,7 @@ import java.util.Random;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
@@ -175,24 +176,16 @@ public class Controller {
 //		 System.out.println(clickedNode.getStyleClass().toString());
 		 
 		 if (clickedNode.getStyleClass().toString().contains("mine")) {
-			 System.out.println("it's a mine!");
-			 
-//			 GAME OVER
-			 
-			 buttonField.setVisible(false);
-			 bombField.setOpacity(0.3);
-			 btnNewGame.setDisable(false);
-			 btnMineDetector.getStyleClass().add("disabledButton");
-			 btnSnapshot.getStyleClass().add("disabledButton");
-			 gameStatus.setVisible(true);
-		    	
-		    
+			 System.out.println("it's a mine!");			 
+			 gameOver();
 		 } else {
 			 System.out.println("it's water!");
 			 
 //			 SET NUMBER OF ADJACENT MINES
 			 String adjBombsNumber = String.valueOf(getNumberOfAdjacentBombs(tileCoord));
-			 bombField.add(new Text(adjBombsNumber),tileCoord[1],tileCoord[0]);
+			 Text numberField = new Text(adjBombsNumber);
+			 bombField.add(numberField,tileCoord[1],tileCoord[0]);
+			 bombField.setHalignment(numberField, HPos.CENTER);
 			 
 		 }
 	  }
@@ -264,6 +257,7 @@ public class Controller {
 	                		item.setVisible(false);
 	                		++openedCells;
 	                		updateCellsCounter();
+	                		checkIfWon();
 	                		
 	                     }
 	                	
@@ -284,7 +278,35 @@ public class Controller {
 		  // ask to professor the best way to update the counter
 		  progressBar.setProgress(0.01*openedCells);
 		  openedNumber.setText(openedCells.toString());
+		  remainingNumber.setText(Integer.toString(150-openedCells));
 		  
+	  }
+	  
+	  private void checkIfWon() {
+		  if (numberOfBombs + openedCells == 150) {
+			  
+			  //you won!
+			  buttonField.setVisible(false);
+			  bombField.setOpacity(0.1);
+			  btnNewGame.setDisable(false);
+			  btnMineDetector.getStyleClass().add("disabledButton");
+			  btnSnapshot.getStyleClass().add("disabledButton");
+			  gameStatus.setText("You won!!");
+			  gameStatus.setVisible(true);
+			  
+		  }
+	  }
+	  
+	  private void gameOver() {
+		  
+		  	 buttonField.setVisible(false);
+			 bombField.setOpacity(0.3);
+			 btnNewGame.setDisable(false);
+			 btnMineDetector.getStyleClass().add("disabledButton");
+			 btnSnapshot.getStyleClass().add("disabledButton");
+			 gameStatus.setText("Game Over");
+			 gameStatus.setVisible(true);
+			
 	  }
 }
 

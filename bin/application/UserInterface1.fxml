@@ -107,12 +107,12 @@
             </SplitPane>
             <AnchorPane layoutY="250.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="189.0">
                <children>
-            <Text fx:id="gameStatus" fill="#dd2a2a" strokeType="OUTSIDE" strokeWidth="0.0" text="Game Over" AnchorPane.leftAnchor="176.0" AnchorPane.topAnchor="225.0">
+            <Text fx:id="gameStatus" fill="#2c66db" layoutX="77.0" layoutY="287.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start a New Game!" textAlignment="CENTER" AnchorPane.leftAnchor="77.0" AnchorPane.topAnchor="225.0">
                <font>
                   <Font name="System Bold" size="64.0" />
                </font>
                <effect>
-                  <DropShadow color="#ff5959" />
+                  <DropShadow color="#74b2ff" />
                </effect>
             </Text>
                   <Pane layoutX="140.0" layoutY="29.0" prefHeight="50.0" prefWidth="200.0" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="30.0">
