@@ -1,0 +1,27 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+.disabledButton {
+	-fx-background-color: #f1f2f1;
+	-fx-text-fill: grey;
+	-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.1) , 10,0,0,1 );
+	-fx-opacity: 0.4;
+}
+
+.enabledButton {
+	-fx-background-color: #316db9;
+	-fx-text-fill: white;
+	-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.2) , 10,0,0,1 );
+	-fx-opacity: 1.0;
+}
+
+.mine {
+	-fx-background-color: red;
+}
+
+.water {
+	-fx-background-color: white;
+}
+
+.flagged {
+	-fx-background-color: blue;
+}
