@@ -107,14 +107,6 @@
             </SplitPane>
             <AnchorPane layoutY="250.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="189.0">
                <children>
-            <Text fx:id="gameStatus" fill="#2c66db" layoutX="77.0" layoutY="287.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start a New Game!" textAlignment="CENTER" AnchorPane.leftAnchor="77.0" AnchorPane.topAnchor="225.0">
-               <font>
-                  <Font name="System Bold" size="64.0" />
-               </font>
-               <effect>
-                  <DropShadow color="#74b2ff" />
-               </effect>
-            </Text>
                   <Pane layoutX="140.0" layoutY="29.0" prefHeight="50.0" prefWidth="200.0" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="30.0">
                      <children>
                         <Button fx:id="btnMineDetector" contentDisplay="CENTER" layoutX="30.0" layoutY="6.0" mnemonicParsing="false" styleClass="disabledButton" text="Mine Detector" textAlignment="CENTER" textFill="#b2b2b2">
@@ -156,6 +148,14 @@
             <GridPane fx:id="buttonField" hgap="8" maxWidth="400.0" vgap="8" />
          </children>
       </StackPane>
+      <Text fx:id="gameStatus" fill="#2c66db" strokeType="OUTSIDE" strokeWidth="0.0" text="Start a New Game!" textAlignment="CENTER" AnchorPane.leftAnchor="77.0" AnchorPane.topAnchor="415.0">
+         <font>
+            <Font name="System Bold" size="64.0" />
+         </font>
+         <effect>
+            <DropShadow color="#74b2ff" />
+         </effect>
+      </Text>
          </children>
    <styleClass>
       <String fx:value=".button" />

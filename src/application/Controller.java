@@ -66,7 +66,8 @@ public class Controller {
     	
     	buttonField.setVisible(true);
     	gameStatsPane.setOpacity(1);
-    	bombField.setOpacity(1);
+    	bombField.setVisible(true);
+		bombField.setOpacity(1);
     	
     	openedNumber.setText(" 0");
     	openedCells = 0;
@@ -86,18 +87,8 @@ public class Controller {
     	
     	// delete last buttonField & bombField and create a new one
     	
-    	if (buttonField.getChildren().isEmpty()) {
-    		createGrid();
-    		createBombField();
-    	} else {
-		  		
-    			buttonField.getChildren().clear();
-		  		bombField.getChildren().clear();
-		  		createGrid();
-	    		createBombField();
-		  		 
-			 }
-    	
+    	createGrid();
+    	createBombField();
     	addGridEvent();
     	
     	btnMineDetector.getStyleClass().add("enabledButton");
@@ -120,9 +111,10 @@ public class Controller {
     }	
     
 //	   Grid creation method
-    
 	  @FXML
 	  public void createGrid() {
+		  
+		  		buttonField.getChildren().clear();
 		  
 		  	 	int i =0;
 				int j =0;
@@ -142,6 +134,8 @@ public class Controller {
 	  
 	  @FXML
 	  public void createBombField() {
+		  
+		  bombField.getChildren().clear();
 		  numberOfBombs = 0;
 		  int i =0;
 			 int j =0;
@@ -237,7 +231,8 @@ public class Controller {
 		    }
 		    return null;
 		}
-   
+	  
+//	  add event to every grid cell 
 	  private void addGridEvent() {
 	        buttonField.getChildren().forEach(item -> {
 	            item.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -251,12 +246,13 @@ public class Controller {
 	                	
 	                	tileCoord[0] = (Integer) item.getProperties().get("gridpane-row");
 	                	tileCoord[1] = (Integer) item.getProperties().get("gridpane-column");
-	                	checkIfBomb(tileCoord);
+	                	
 	                	
 	                	if (event.getButton() == MouseButton.PRIMARY) {
 	                		item.setVisible(false);
 	                		++openedCells;
 	                		updateCellsCounter();
+	                		checkIfBomb(tileCoord);
 	                		checkIfWon();
 	                		
 	                     }
@@ -274,6 +270,7 @@ public class Controller {
 	        });
 	    }
 	  
+	  
 	  private void updateCellsCounter() {
 		  // ask to professor the best way to update the counter
 		  progressBar.setProgress(0.01*openedCells);
@@ -283,15 +280,16 @@ public class Controller {
 	  }
 	  
 	  private void checkIfWon() {
+		  System.out.println(numberOfBombs);
 		  if (numberOfBombs + openedCells == 150) {
 			  
 			  //you won!
 			  buttonField.setVisible(false);
-			  bombField.setOpacity(0.1);
+			  bombField.setVisible(false);
 			  btnNewGame.setDisable(false);
 			  btnMineDetector.getStyleClass().add("disabledButton");
 			  btnSnapshot.getStyleClass().add("disabledButton");
-			  gameStatus.setText("You won!!");
+			  gameStatus.setText("––––You won!!––––");
 			  gameStatus.setVisible(true);
 			  
 		  }
@@ -301,10 +299,11 @@ public class Controller {
 		  
 		  	 buttonField.setVisible(false);
 			 bombField.setOpacity(0.3);
+			 gameStatsPane.setOpacity(0.4);
 			 btnNewGame.setDisable(false);
 			 btnMineDetector.getStyleClass().add("disabledButton");
 			 btnSnapshot.getStyleClass().add("disabledButton");
-			 gameStatus.setText("Game Over");
+			 gameStatus.setText("–––Game Over––––");
 			 gameStatus.setVisible(true);
 			
 	  }
