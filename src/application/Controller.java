@@ -177,6 +177,7 @@ public class Controller {
 			 
 //			 SET NUMBER OF ADJACENT MINES
 			 String adjBombsNumber = String.valueOf(getNumberOfAdjacentBombs(tileCoord));
+			 adjBombsNumber = (adjBombsNumber.equals("0") ? " " : adjBombsNumber);
 			 Text numberField = new Text(adjBombsNumber);
 			 bombField.add(numberField,tileCoord[1],tileCoord[0]);
 			 bombField.setHalignment(numberField, HPos.CENTER);

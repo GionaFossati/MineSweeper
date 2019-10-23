@@ -145,7 +145,7 @@
          <children>
             <GridPane fx:id="bombField" hgap="8" maxWidth="400.0" vgap="8">
       </GridPane>
-            <GridPane fx:id="buttonField" hgap="8" maxWidth="400.0" vgap="8" />
+            <GridPane fx:id="buttonField" gridLinesVisible="true" hgap="8" maxWidth="400.0" styleClass="grid" vgap="8" />
          </children>
       </StackPane>
       <Text fx:id="gameStatus" fill="#2c66db" strokeType="OUTSIDE" strokeWidth="0.0" text="Start a New Game!" textAlignment="CENTER" AnchorPane.leftAnchor="77.0" AnchorPane.topAnchor="415.0">
