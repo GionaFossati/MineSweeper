@@ -19,86 +19,62 @@
               <items>
                 <AnchorPane fx:id="gameStatsPane" minHeight="0.0" minWidth="0.0" opacity="0.6" prefHeight="100.0" prefWidth="160.0" style="-fx-border-color: #316db9#316db9;">
                      <children>
-                        <Pane prefHeight="230.0" prefWidth="230.0" style="-fx-background-color: #6a96cc;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <Pane layoutX="2.0" layoutY="2.0" prefHeight="196.0" prefWidth="352.0" style="-fx-background-color: #6a96cc;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Text fill="WHITE" layoutX="15.0" layoutY="-12.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cells" textAlignment="CENTER" x="71.0" y="50.0">
+                              <Text fill="WHITE" layoutX="75.0" layoutY="-10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cells" textAlignment="CENTER" x="71.0" y="50.0">
                                  <font>
                                     <Font name="Avenir Book" size="24.0" />
                                  </font>
                               </Text>
-                              <Text fill="WHITE" layoutX="-46.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Opened" textAlignment="CENTER" x="71.0" y="50.0">
+                              <Text fill="WHITE" layoutX="14.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Opened" textAlignment="CENTER" x="71.0" y="50.0">
                                  <font>
                                     <Font name="Avenir Book" size="18.0" />
                                  </font>
                               </Text>
-                              <Text fill="WHITE" layoutX="48.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Remaining" textAlignment="CENTER" x="71.0" y="50.0">
+                              <Text fill="WHITE" layoutX="108.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Remaining" textAlignment="CENTER" x="71.0" y="50.0">
                                  <font>
                                     <Font name="Avenir Book" size="18.0" />
                                  </font>
                               </Text>
-                              <Text fx:id="openedNumber" fill="WHITE" layoutX="-41.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="30" textAlignment="CENTER" x="71.0" y="50.0">
+                              <Text fx:id="openedNumber" fill="WHITE" layoutX="19.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="30" textAlignment="CENTER" x="71.0" y="50.0">
                                  <font>
                                     <Font name="System Bold" size="48.0" />
                                  </font>
                               </Text>
-                              <Text fx:id="remainingNumber" fill="WHITE" layoutX="51.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="120" textAlignment="CENTER" x="71.0" y="50.0">
+                              <Text fx:id="remainingNumber" fill="WHITE" layoutX="111.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="120" textAlignment="CENTER" x="71.0" y="50.0">
                                  <font>
                                     <Font name="System Bold" size="48.0" />
                                  </font>
                               </Text>
-                              <ProgressBar fx:id="progressBar" layoutX="15.0" layoutY="154.0" prefWidth="200.0" progress="0.4">
+                              <ProgressBar fx:id="progressBar" layoutX="84.0" layoutY="155.0" prefHeight="20.0" prefWidth="188.0" progress="0.4">
                                  <cursor>
                                     <Cursor fx:constant="DEFAULT" />
                                  </cursor>
                               </ProgressBar>
                            </children>
                         </Pane>
-                        <Pane layoutX="10.0" layoutY="10.0" prefHeight="230.0" prefWidth="230.0" style="-fx-background-color: #6a96cc;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="458.0" AnchorPane.topAnchor="0.0">
+                        <Pane layoutX="357.0" layoutY="4.0" prefHeight="196.0" prefWidth="343.0" style="-fx-background-color: #6a96cc;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="352.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Text fill="WHITE" layoutX="-10.0" layoutY="-12.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Match Time" textAlignment="CENTER" x="62.0" y="50.0">
+                              <Text fill="WHITE" layoutX="50.0" layoutY="-12.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Match Time" textAlignment="CENTER" x="62.0" y="50.0">
                                  <font>
                                     <Font name="Avenir Book" size="24.0" />
                                  </font>
                               </Text>
-                              <Text fx:id="minutesCounter" fill="WHITE" layoutX="6.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="12" textAlignment="RIGHT" x="38.0" y="40.0">
+                              <Text fx:id="minutesCounter" fill="WHITE" layoutX="32.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="12" textAlignment="RIGHT" x="38.0" y="40.0">
                                  <font>
-                                    <Font name="System Bold" size="48.0" />
+                                    <Font name="System Bold" size="70.0" />
                                  </font>
                               </Text>
-                        <Text fill="WHITE" layoutX="64.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":" textAlignment="CENTER" x="38.0" y="40.0">
+                        <Text fill="WHITE" layoutX="120.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":" textAlignment="CENTER" x="38.0" y="40.0">
                            <font>
-                              <Font name="System Bold" size="48.0" />
+                              <Font name="System Bold" size="70.0" />
                            </font>
                         </Text>
-                        <Text fx:id="secondsCounter" fill="WHITE" layoutX="85.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="34" x="38.0" y="40.0">
+                        <Text fx:id="secondsCounter" fill="WHITE" layoutX="153.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="34" x="38.0" y="40.0">
                            <font>
-                              <Font name="System Bold" size="48.0" />
+                              <Font name="System Bold" size="70.0" />
                            </font>
                         </Text>
-                           </children>
-                        </Pane>
-                        <Pane layoutX="10.0" layoutY="10.0" prefHeight="230.0" prefWidth="230.0" style="-fx-background-color: #316db9#316db9;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="230.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <Text fill="WHITE" layoutX="7.0" layoutY="-12.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Points" textAlignment="CENTER" x="71.0" y="50.0">
-                                 <font>
-                                    <Font name="Avenir Book" size="24.0" />
-                                 </font>
-                              </Text>
-                              <Text fx:id="pointsCounter" fill="WHITE" layoutX="-9.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="30" textAlignment="RIGHT" x="74.0" y="40.0">
-                                 <font>
-                                    <Font name="System Bold" size="72.0" />
-                                 </font>
-                              </Text>
-                              <Text fill="WHITE" layoutX="-22.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Record:" textAlignment="CENTER" x="80.0" y="23.0">
-                                 <font>
-                                    <Font name="Avenir Book" size="14.0" />
-                                 </font>
-                              </Text>
-                              <Text fx:id="recordNumber" fill="WHITE" layoutX="31.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="89130" x="80.0" y="23.0">
-                                 <font>
-                                    <Font name="Avenir Book" size="18.0" />
-                                 </font>
-                              </Text>
                            </children>
                         </Pane>
                      </children>
@@ -143,8 +119,7 @@
       </Button>
       <StackPane layoutX="290.0" layoutY="280.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="280.0">
          <children>
-            <GridPane fx:id="bombField" hgap="8" maxWidth="400.0" vgap="8">
-      </GridPane>
+            <GridPane fx:id="bombField" gridLinesVisible="true" hgap="8" maxWidth="400.0" styleClass="grid" vgap="8" />
             <GridPane fx:id="buttonField" gridLinesVisible="true" hgap="8" maxWidth="400.0" styleClass="grid" vgap="8" />
          </children>
       </StackPane>

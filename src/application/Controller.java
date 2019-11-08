@@ -13,6 +13,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Controller {
 
@@ -33,9 +35,6 @@ public class Controller {
   
     @FXML
     private Text secondsCounter;
-
-    @FXML
-    private Text pointsCounter;
     
     @FXML
     private Button btnMineDetector;
@@ -57,8 +56,6 @@ public class Controller {
     
     private Integer numberOfBombs;
     private Integer openedCells;
-    private Integer remainingCells;
-    private Integer score;
    
     
     @FXML
@@ -71,11 +68,8 @@ public class Controller {
     	
     	openedNumber.setText(" 0");
     	openedCells = 0;
-    	score = 0;
     	remainingNumber.setText("150");
     	progressBar.setProgress(0);
-    	
-    	pointsCounter.setText(" 0");
     	
     	secondsCounter.setText("00");
     	minutesCounter.setText("00");
@@ -99,7 +93,7 @@ public class Controller {
     	System.out.println("Waiting for first click to start clock...");
     	
 
- //    	startClock();  	
+     	startClock();  	
     	
     }
     
@@ -107,8 +101,12 @@ public class Controller {
 
     
     void startClock() {
+    	Timer timer = new Timer("MyTimer");
+        timer.scheduleAtFixedRate(new gameTimer(), 30, 1000);
+//        gameTimer gameTimer = new gameTimer();
+//    	gameTimer.run();
     	
-    }	
+    }
     
 //	   Grid creation method
 	  @FXML
