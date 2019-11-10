@@ -60,7 +60,7 @@ public class Controller {
 
 	@FXML
 	void newGame(MouseEvent event) {
-
+//		graphic adjustments 
 		buttonField.setVisible(true);
 		gameStatsPane.setOpacity(1);
 		bombField.setVisible(true);
@@ -76,30 +76,32 @@ public class Controller {
 
 		gameStatus.setVisible(false);
 
-		bombField.getChildren().removeAll(bombField.getChildren());
-		buttonField.getChildren().removeAll(bombField.getChildren());
-
-		// delete last buttonField & bombField and create a new one
-
-		createGrid();
-		createBombField();
-		addGridEvent();
-
 		btnMineDetector.getStyleClass().add("enabledButton");
 		btnSnapshot.getStyleClass().add("enabledButton");
 
 		btnNewGame.setDisable(true);
-		
+
+		// if a previous game has been played: delete last buttonField & bombField and
+		// create a new one
+		bombField.getChildren().removeAll(bombField.getChildren());
+		buttonField.getChildren().removeAll(bombField.getChildren());
+
+//		create stacked grids and attach the mouse clicked event to each cell
+		createGrid();
+		createBombField();
+		addGridEvent();
+
+//		starts match timer 
 		timeCounter = 0;
 		gameState = "going";
 		startClockThread();
 
 	}
 
-// Game timer method
+// Match timer method
 
 	void startClockThread() {
-		
+
 		Thread t = new Thread(new Runnable() {
 
 			@Override
@@ -107,13 +109,13 @@ public class Controller {
 				while (gameState == "going") {
 					timeCounter++;
 					try {
-						
-						secondsCounter.setText(String.valueOf(timeCounter%60));
-						
-						if (timeCounter%60 == 0) {
-							minutesCounter.setText("0" + String.valueOf(Integer.valueOf(minutesCounter.getText())+1));
+
+						secondsCounter.setText(String.valueOf(timeCounter % 60));
+
+						if (timeCounter % 60 == 0) {
+							minutesCounter.setText("0" + String.valueOf(Integer.valueOf(minutesCounter.getText()) + 1));
 						}
-						
+
 						Thread.sleep(1000);
 					} catch (InterruptedException ex) {
 						ex.printStackTrace();
@@ -121,7 +123,7 @@ public class Controller {
 				}
 			}
 		});
-		
+
 		t.setDaemon(true);
 		t.start();
 	}
@@ -158,9 +160,11 @@ public class Controller {
 		for (i = 0; i < 15; ++i)
 			for (j = 0; j < 10; ++j) {
 
+//				randomize the chanche to have a bomb: in this case, 1 out of 15
 				boolean fate = new Random().nextInt(15) == 0;
 				Button btn = new Button();
 
+//				use css class to determine if a cell contains a mine or "water"
 				if (fate == false) {
 					btn.getStyleClass().add("water");
 					bombField.add(btn, i, j);
@@ -174,63 +178,6 @@ public class Controller {
 
 			}
 
-	}
-
-	void checkIfBomb(Integer[] tileCoord) {
-		Node clickedNode = getNodeFromBombField(tileCoord[0], tileCoord[1]);
-//		 System.out.println(clickedNode.getStyleClass().toString());
-
-		if (clickedNode.getStyleClass().toString().contains("mine")) {
-			System.out.println("it's a mine!");
-			gameOver();
-		} else {
-			System.out.println("it's water!");
-
-//			 SET NUMBER OF ADJACENT MINES
-			String adjBombsNumber = String.valueOf(getNumberOfAdjacentBombs(tileCoord));
-			adjBombsNumber = (adjBombsNumber.equals("0") ? " " : adjBombsNumber);
-			Text numberField = new Text(adjBombsNumber);
-			bombField.add(numberField, tileCoord[1], tileCoord[0]);
-			bombField.setHalignment(numberField, HPos.CENTER);
-
-		}
-	}
-
-	public int getNumberOfAdjacentBombs(Integer[] tileCoord) {
-		int[] points = new int[] { -1, -1, -1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0, 1, 1 };
-
-		int numberAdjacentOfBombs = 0;
-
-		for (int i = 0; i < points.length; i++) {
-			int dx = points[i];
-			int dy = points[++i];
-
-			int newX = tileCoord[1] + dx;
-			int newY = tileCoord[0] + dy;
-
-			Node adjacentNode = getNodeFromBombField(newY, newX);
-
-//	            first if: handle edges tiles
-			if (newX != -1 && newY != -1 && newX < 15 && newY < 10) {
-
-//		          second if: check if is a mine
-				if (adjacentNode.getStyleClass().toString().contains("mine")) {
-					++numberAdjacentOfBombs;
-//		            	System.out.println(numberOfBombs);
-				}
-			}
-
-		}
-		return numberAdjacentOfBombs;
-	}
-
-	private Node getNodeFromBombField(int row, int col) {
-		for (Node node : bombField.getChildren()) {
-			if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
-				return node;
-			}
-		}
-		return null;
 	}
 
 //	  add event to every grid cell 
@@ -248,6 +195,8 @@ public class Controller {
 					tileCoord[0] = (Integer) item.getProperties().get("gridpane-row");
 					tileCoord[1] = (Integer) item.getProperties().get("gridpane-column");
 
+//					if click left button : disable visibility and check if under it there is a bomb (checkIfBomb) 
+//					or if there are no more cells remaining (checkIfWon)
 					if (event.getButton() == MouseButton.PRIMARY) {
 						item.setVisible(false);
 						++openedCells;
@@ -257,6 +206,7 @@ public class Controller {
 
 					}
 
+//					change cell colour if the right button is clicked
 					if (event.getButton() == MouseButton.SECONDARY) {
 						System.out.println("Right button clicked");
 						item.getStyleClass().add("flagged");
@@ -268,8 +218,67 @@ public class Controller {
 		});
 	}
 
+	void checkIfBomb(Integer[] tileCoord) {
+//		retrieve the node from the getNodeFromBombField method and check if contains a button with the css class ".mine"
+
+		Node clickedNode = getNodeFromBombField(tileCoord[0], tileCoord[1]);
+
+		if (clickedNode.getStyleClass().toString().contains("mine")) {
+			System.out.println("it's a mine!");
+			gameOver();
+		} else {
+			System.out.println("it's water!");
+
+//			if not a mine: add a text with the NUMBER OF ADJACENT MINES
+			String adjBombsNumber = String.valueOf(getNumberOfAdjacentBombs(tileCoord));
+			adjBombsNumber = (adjBombsNumber.equals("0") ? " " : adjBombsNumber);
+			Text numberField = new Text(adjBombsNumber);
+			bombField.add(numberField, tileCoord[1], tileCoord[0]);
+			bombField.setHalignment(numberField, HPos.CENTER);
+
+		}
+	}
+
+//	method used to return a int corresponding to the number of the bombs around a cell
+	public int getNumberOfAdjacentBombs(Integer[] tileCoord) {
+		int[] points = new int[] { -1, -1, -1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0, 1, 1 };
+
+		int numberAdjacentOfBombs = 0;
+
+		for (int i = 0; i < points.length; i++) {
+			int dx = points[i];
+			int dy = points[++i];
+
+			int newX = tileCoord[1] + dx;
+			int newY = tileCoord[0] + dy;
+
+			Node adjacentNode = getNodeFromBombField(newY, newX);
+
+//	        first if: handle edges tiles in order to avoid coordinates that are out of the grid
+			if (newX != -1 && newY != -1 && newX < 15 && newY < 10) {
+
+//		        second if: check if is a mine
+				if (adjacentNode.getStyleClass().toString().contains("mine")) {
+					++numberAdjacentOfBombs;
+				}
+			}
+
+		}
+		return numberAdjacentOfBombs;
+	}
+
+//	simple method that, given a cell coordinates, returns its content
+	private Node getNodeFromBombField(int row, int col) {
+		for (Node node : bombField.getChildren()) {
+			if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
+				return node;
+			}
+		}
+		return null;
+	}
+
+//	updates the counter of the opened cells 
 	private void updateCellsCounter() {
-		// ask to professor the best way to update the counter
 		progressBar.setProgress(0.01 * openedCells);
 		openedNumber.setText(openedCells.toString());
 		remainingNumber.setText(Integer.toString(150 - openedCells));
@@ -303,7 +312,6 @@ public class Controller {
 		gameStatus.setText("–––Game Over––––");
 		gameStatus.setVisible(true);
 		gameState = "gameover";
-		
 
 	}
 }
