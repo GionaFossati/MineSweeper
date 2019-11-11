@@ -7,11 +7,19 @@ import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import java.util.Timer;
 
@@ -36,13 +44,7 @@ public class Controller {
 	private Text secondsCounter;
 
 	@FXML
-	private Button btnMineDetector;
-
-	@FXML
 	private Button btnNewGame;
-
-	@FXML
-	private Button btnSnapshot;
 
 	@FXML
 	private GridPane buttonField;
@@ -51,15 +53,41 @@ public class Controller {
 	private GridPane bombField;
 
 	@FXML
+	private ImageView dropOne;
+
+	@FXML
+	private ImageView dropTwo;
+
+	@FXML
+	private ImageView dropThree;
+
+	@FXML
 	private Text gameStatus;
 
 	private Integer numberOfBombs;
 	private Integer openedCells;
 	private String gameState = "gameover";
 	public int timeCounter;
+	int[] points = new int[] { -1, -1, -1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0, 1, 1 };
 
 	@FXML
 	void newGame(MouseEvent event) {
+
+// 		if a previous game has been played: delete last buttonField & bombField and
+// 		create a new one
+		bombField.getChildren().removeAll(bombField.getChildren());
+		buttonField.getChildren().removeAll(bombField.getChildren());
+
+//		create stacked grids and attach the mouse clicked event to each cell
+		createGrid();
+		createBombField();
+		addGridEvent();
+
+//		starts match timer 
+		timeCounter = 0;
+		gameState = "going";
+		startClockThread();
+
 //		graphic adjustments 
 		buttonField.setVisible(true);
 		gameStatsPane.setOpacity(1);
@@ -76,25 +104,15 @@ public class Controller {
 
 		gameStatus.setVisible(false);
 
-		btnMineDetector.getStyleClass().add("enabledButton");
-		btnSnapshot.getStyleClass().add("enabledButton");
-
 		btnNewGame.setDisable(true);
 
-		// if a previous game has been played: delete last buttonField & bombField and
-		// create a new one
-		bombField.getChildren().removeAll(bombField.getChildren());
-		buttonField.getChildren().removeAll(bombField.getChildren());
+		dropOne.setDisable(false);
+		dropTwo.setDisable(false);
+		dropThree.setDisable(false);
 
-//		create stacked grids and attach the mouse clicked event to each cell
-		createGrid();
-		createBombField();
-		addGridEvent();
-
-//		starts match timer 
-		timeCounter = 0;
-		gameState = "going";
-		startClockThread();
+		dropOne.setOpacity(1.0);
+		dropTwo.setOpacity(1.0);
+		dropThree.setOpacity(1.0);
 
 	}
 
@@ -160,7 +178,7 @@ public class Controller {
 		for (i = 0; i < 15; ++i)
 			for (j = 0; j < 10; ++j) {
 
-//				randomize the chanche to have a bomb: in this case, 1 out of 15
+//				Randomise the chance to have a bomb: 1 out of 15
 				boolean fate = new Random().nextInt(15) == 0;
 				Button btn = new Button();
 
@@ -180,20 +198,23 @@ public class Controller {
 
 	}
 
-//	  add event to every grid cell 
+//	forEach statement that adds events to every grid cell 
 	private void addGridEvent() {
+
 		buttonField.getChildren().forEach(item -> {
+			
+			Integer[] tileCoord = new Integer[2];
+
+//			coord[0] = row index (Y)
+//			coord[1] = column index (X)
+
+			tileCoord[0] = (Integer) item.getProperties().get("gridpane-row");
+			tileCoord[1] = (Integer) item.getProperties().get("gridpane-column");
+			
+//			EVENT: ON MOUSE CLICKED
 			item.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
-
-					Integer[] tileCoord = new Integer[2];
-
-//	        			coord[0] = row index (Y)
-//	        			coord[1] = column index (X)
-
-					tileCoord[0] = (Integer) item.getProperties().get("gridpane-row");
-					tileCoord[1] = (Integer) item.getProperties().get("gridpane-column");
 
 //					if click left button : disable visibility and check if under it there is a bomb (checkIfBomb) 
 //					or if there are no more cells remaining (checkIfWon)
@@ -215,33 +236,120 @@ public class Controller {
 				}
 			});
 
+//			EVENTS: DRAGGING
+			item.setOnDragEntered(new EventHandler<DragEvent>() {
+				public void handle(DragEvent event) {
+					/* the drag-and-drop gesture entered the target */
+					/* show to the user that it is an actual gesture target */
+					if (event.getGestureSource() != item && event.getDragboard().hasImage()) {
+						item.getStyleClass().add("flagged");
+					}
+				}
+			});
+
+			item.setOnDragExited(new EventHandler<DragEvent>() {
+				public void handle(DragEvent event) {
+					/* mouse moved away, remove the graphical cues */
+					item.getStyleClass().remove("flagged");
+					item.getStyleClass().add("enabledbutton");
+				}
+			});
+
+			item.setOnDragOver(new EventHandler<DragEvent>() {
+				public void handle(DragEvent event) {
+					event.acceptTransferModes(TransferMode.ANY);
+					event.consume();
+				}
+			});
+
+			item.setOnDragDropped(new EventHandler<DragEvent>() {
+				@Override
+				public void handle(DragEvent event) {
+
+					Dragboard db = event.getDragboard();
+					boolean success = false;
+					if (db.hasImage()) {
+						clearCellsAround(tileCoord);
+						success = true;
+					}
+
+					event.setDropCompleted(success);
+				}
+			});
+
 		});
 	}
+	
+//	DROP DRAG&DROP METHODS
+	@FXML
+	void detectedDrag(MouseEvent event) {
 
+		System.out.println("drag detected");
+		Dragboard db = ((Node) event.getSource()).startDragAndDrop(TransferMode.ANY);
+		ClipboardContent content = new ClipboardContent();
+		content.putImage(((ImageView) event.getSource()).getImage());
+		db.setContent(content);
+
+		event.consume();
+
+	}
+	
+//	disable drop after drag&drop done
+	@FXML
+	void dropDragDone(DragEvent event) {
+		System.out.println("drag done");
+		((Node) event.getSource()).setDisable(true);
+		((Node) event.getSource()).setOpacity(0.3);
+	}
+
+	
+	
+//	method invoked when one of the three "drops" is dragged over a cell
+	void clearCellsAround(Integer tileCoord[]) {
+
+		Node central_tile = getNodeFromField(tileCoord[0], tileCoord[1], buttonField);
+		central_tile.setVisible(false);
+		setNumberOfAdjacentBombs(tileCoord);
+		++openedCells;
+		updateCellsCounter();
+
+		for (int i = 0; i < points.length; i++) {
+			int dx = points[i];
+			int dy = points[++i];
+
+			int newX = tileCoord[1] + dx;
+			int newY = tileCoord[0] + dy;
+
+			Node tile = getNodeFromField(newY, newX, buttonField);
+
+			if (newX != -1 && newY != -1 && newX < 15 && newY < 10) {
+				tile.setVisible(false);
+				setNumberOfAdjacentBombs(new Integer[] { newY, newX });
+				++openedCells;
+				updateCellsCounter();
+			}
+
+		}
+	}
+
+
+//	retrieves the node from the getNodeFromField method and check if contains a button with the css class ".mine"
 	void checkIfBomb(Integer[] tileCoord) {
-//		retrieve the node from the getNodeFromBombField method and check if contains a button with the css class ".mine"
 
-		Node clickedNode = getNodeFromBombField(tileCoord[0], tileCoord[1]);
+		Node clickedNode = getNodeFromField(tileCoord[0], tileCoord[1], bombField);
 
 		if (clickedNode.getStyleClass().toString().contains("mine")) {
 			System.out.println("it's a mine!");
 			gameOver();
 		} else {
-			System.out.println("it's water!");
-
-//			if not a mine: add a text with the NUMBER OF ADJACENT MINES
-			String adjBombsNumber = String.valueOf(getNumberOfAdjacentBombs(tileCoord));
-			adjBombsNumber = (adjBombsNumber.equals("0") ? " " : adjBombsNumber);
-			Text numberField = new Text(adjBombsNumber);
-			bombField.add(numberField, tileCoord[1], tileCoord[0]);
-			bombField.setHalignment(numberField, HPos.CENTER);
+			System.out.println("it's empty!");
+			setNumberOfAdjacentBombs(tileCoord);
 
 		}
 	}
 
-//	method used to return a int corresponding to the number of the bombs around a cell
-	public int getNumberOfAdjacentBombs(Integer[] tileCoord) {
-		int[] points = new int[] { -1, -1, -1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0, 1, 1 };
+//	method used to add a text corresponding to the number of bombs around a cell
+	public void setNumberOfAdjacentBombs(Integer[] tileCoord) {
 
 		int numberAdjacentOfBombs = 0;
 
@@ -252,7 +360,7 @@ public class Controller {
 			int newX = tileCoord[1] + dx;
 			int newY = tileCoord[0] + dy;
 
-			Node adjacentNode = getNodeFromBombField(newY, newX);
+			Node adjacentNode = getNodeFromField(newY, newX, bombField);
 
 //	        first if: handle edges tiles in order to avoid coordinates that are out of the grid
 			if (newX != -1 && newY != -1 && newX < 15 && newY < 10) {
@@ -264,12 +372,22 @@ public class Controller {
 			}
 
 		}
-		return numberAdjacentOfBombs;
+		 
+//		add the number to the corresponding cell
+		
+		String adjBombsNumber = String.valueOf(numberAdjacentOfBombs);
+		adjBombsNumber = (adjBombsNumber.equals("0") ? " " : adjBombsNumber); /* used to add a blank space instead of a "0" */
+		
+		Text numberField = new Text(adjBombsNumber);
+		
+		bombField.add(numberField, tileCoord[1], tileCoord[0]);
+		bombField.setHalignment(numberField, HPos.CENTER);
+
 	}
 
 //	simple method that, given a cell coordinates, returns its content
-	private Node getNodeFromBombField(int row, int col) {
-		for (Node node : bombField.getChildren()) {
+	private Node getNodeFromField(int row, int col, GridPane selectedGridPane) {
+		for (Node node : selectedGridPane.getChildren()) {
 			if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
 				return node;
 			}
@@ -285,16 +403,15 @@ public class Controller {
 
 	}
 
+//	method that checks if the number of n° opened cells + n° bombs is equal total number of cells
 	private void checkIfWon() {
-		System.out.println(numberOfBombs);
+
 		if (numberOfBombs + openedCells == 150) {
 
 			// you won!
 			buttonField.setVisible(false);
 			bombField.setVisible(false);
 			btnNewGame.setDisable(false);
-			btnMineDetector.getStyleClass().add("disabledButton");
-			btnSnapshot.getStyleClass().add("disabledButton");
 			gameStatus.setText("––––You won!!––––");
 			gameStatus.setVisible(true);
 
@@ -307,10 +424,11 @@ public class Controller {
 		bombField.setOpacity(0.3);
 		gameStatsPane.setOpacity(0.4);
 		btnNewGame.setDisable(false);
-		btnMineDetector.getStyleClass().add("disabledButton");
-		btnSnapshot.getStyleClass().add("disabledButton");
 		gameStatus.setText("–––Game Over––––");
 		gameStatus.setVisible(true);
+		dropOne.setOpacity(0.3);
+		dropTwo.setOpacity(0.3);
+		dropThree.setOpacity(0.3);
 		gameState = "gameover";
 
 	}

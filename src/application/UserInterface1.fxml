@@ -6,6 +6,8 @@
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
@@ -81,34 +83,6 @@
                   </AnchorPane>
               </items>
             </SplitPane>
-            <AnchorPane layoutY="250.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="189.0">
-               <children>
-                  <Pane layoutX="140.0" layoutY="29.0" prefHeight="50.0" prefWidth="200.0" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="30.0">
-                     <children>
-                        <Button fx:id="btnMineDetector" contentDisplay="CENTER" layoutX="30.0" layoutY="6.0" mnemonicParsing="false" styleClass="disabledButton" text="Mine Detector" textAlignment="CENTER" textFill="#b2b2b2">
-                           <font>
-                              <Font name="Avenir Book" size="18.0" />
-                           </font>
-                     <cursor>
-                        <Cursor fx:constant="DEFAULT" />
-                     </cursor>
-                        </Button>
-                     </children>
-                  </Pane>
-                  <Pane layoutX="10.0" layoutY="10.0" prefHeight="50.0" prefWidth="200.0" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="30.0">
-                     <children>
-                        <Button fx:id="btnSnapshot" contentDisplay="CENTER" layoutX="51.0" layoutY="6.0" mnemonicParsing="false" styleClass="disabledButton" text="Snapshot" textAlignment="CENTER" textFill="WHITE">
-                           <font>
-                              <Font name="Avenir Book" size="18.0" />
-                           </font>
-                     <cursor>
-                        <Cursor fx:constant="DEFAULT" />
-                     </cursor>
-                        </Button>
-                     </children>
-                  </Pane>
-               </children>
-            </AnchorPane>
       <Button fx:id="btnNewGame" layoutX="269.0" layoutY="645.0" mnemonicParsing="false" onMouseClicked="#newGame" style="-fx-background-color: #316db9#316db9 #6a96cc#6a96cc #6a96cc #316db9#316db9 #6a96cc#6a96cc #6a96cc;" styleClass="booster-button" text="New Game" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Avenir Book" size="24.0" />
@@ -123,7 +97,7 @@
             <GridPane fx:id="buttonField" gridLinesVisible="true" hgap="8" maxWidth="400.0" styleClass="grid" vgap="8" />
          </children>
       </StackPane>
-      <Text fx:id="gameStatus" fill="#2c66db" strokeType="OUTSIDE" strokeWidth="0.0" text="Start a New Game!" textAlignment="CENTER" AnchorPane.leftAnchor="77.0" AnchorPane.topAnchor="415.0">
+      <Text fx:id="gameStatus" fill="#2c66db" layoutX="67.0" layoutY="412.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start a New Game!" textAlignment="CENTER" AnchorPane.leftAnchor="67.0" AnchorPane.topAnchor="350.125">
          <font>
             <Font name="System Bold" size="64.0" />
          </font>
@@ -131,6 +105,21 @@
             <DropShadow color="#74b2ff" />
          </effect>
       </Text>
+      <ImageView fx:id="dropOne" fitHeight="57.0" fitWidth="52.0" layoutX="253.0" layoutY="221.0" onDragDetected="#detectedDrag" onDragDone="#dropDragDone" opacity="0.3" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../img/drop.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="dropTwo" fitHeight="57.0" fitWidth="52.0" layoutX="324.0" layoutY="221.0" onDragDetected="#detectedDrag" onDragDone="#dropDragDone" opacity="0.3" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../img/drop.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="dropThree" fitHeight="57.0" fitWidth="52.0" layoutX="396.0" layoutY="221.0" onDragDetected="#detectedDrag" onDragDone="#dropDragDone" opacity="0.3" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../img/drop.png" />
+         </image>
+      </ImageView>
          </children>
    <styleClass>
       <String fx:value=".button" />
